@@ -1,0 +1,7 @@
+﻿@KingICT_HostAddress = http://localhost:5258
+
+GET {{KingICT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
