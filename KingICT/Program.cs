@@ -8,9 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
-// Add HTTP client
+// Add HTTP client for Product repo
 builder.Services.AddHttpClient<IProductRepository, ProductRepository>(client =>
+{
+    client.BaseAddress = new Uri("https://dummyjson.com/");
+    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+// Add HTTP client for Auth repo
+builder.Services.AddHttpClient<IAuthRepository, AuthRepository>(client =>
 {
     client.BaseAddress = new Uri("https://dummyjson.com/");
     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
