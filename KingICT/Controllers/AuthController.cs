@@ -13,12 +13,13 @@ namespace KingICT.Controllers
     {
         private readonly IAuthRepository _authRepository;
         private readonly JwtService _jwtService;
-        private readonly TokenBlacklistService _tokenBlacklistService;
+        private readonly ITokenBlacklistService _tokenBlacklistService;
 
-        public AuthController(IAuthRepository authRepository, JwtService jwtService)
+        public AuthController(IAuthRepository authRepository, JwtService jwtService, ITokenBlacklistService tokenBlacklistService)
         {
             _authRepository = authRepository;
             _jwtService = jwtService;
+            _tokenBlacklistService = tokenBlacklistService;
         }
 
         [HttpGet]
@@ -80,8 +81,10 @@ namespace KingICT.Controllers
                     Secure = true,
                     SameSite = SameSiteMode.Strict
                 };
-                Response.Cookies.Append("jwt", "", cookieOptions);
+
+                Console.WriteLine($"token for logout: {token}");
                 _tokenBlacklistService.BlacklistToken(token);
+                Response.Cookies.Append("jwt", "", cookieOptions);
             }
 
             return Ok("Logout Successful!");

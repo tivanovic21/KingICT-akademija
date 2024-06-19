@@ -20,10 +20,10 @@ namespace KingICT.Services
 
         public async Task<List<Products>> FilterProducts(string? category, double? price)
         {
-            var products = await GetProducts();
-
             if (string.IsNullOrEmpty(category) && !price.HasValue) return null;
-            else if(string.IsNullOrEmpty(category) && price.HasValue)
+
+            var products = await GetProducts();
+            if(string.IsNullOrEmpty(category) && price.HasValue)
             {
                 return products.Where(p => p.Price <= price)
                 .ToList();

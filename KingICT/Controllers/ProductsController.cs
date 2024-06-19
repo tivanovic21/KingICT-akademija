@@ -19,7 +19,7 @@ namespace KingICT.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        public async Task<ActionResult<Products>> GetProducts()
+        public async Task<ActionResult<List<Products>>> GetProducts()
         {
             var products = await _productRepository.GetProducts();
 
