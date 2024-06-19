@@ -18,7 +18,7 @@ namespace KingICT.Services
             _httpClient = httpClient;
 		}
 
-        public async Task<List<Accounts>> GetAccounts()
+        public async Task<List<AccountsDBO>> GetAccounts()
         {
             var response = await _httpClient.GetAsync("users");
             response.EnsureSuccessStatusCode();
@@ -35,7 +35,7 @@ namespace KingICT.Services
             return accountResponse.Users;
         }
 
-        public async Task<string> Login(Accounts account)
+        public async Task<AccountsDTO> Login(AccountsDBO account)
         {
             var allAccounts = await GetAccounts();
             var selectedAccount = allAccounts.FirstOrDefault(u => u.Username == account.Username);
@@ -45,10 +45,8 @@ namespace KingICT.Services
             var response = await _httpClient.PostAsJsonAsync("auth/login", body);
             response.EnsureSuccessStatusCode();
 
-            var jsonResponse = await response.Content.ReadFromJsonAsync<AccountsDTO>();
-            var authToken = jsonResponse.Token;
-
-            return authToken;
+            var accountReposnse = await response.Content.ReadFromJsonAsync<AccountsDTO>();
+            return accountReposnse;
         }
 
 

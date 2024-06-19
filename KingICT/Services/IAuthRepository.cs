@@ -6,8 +6,8 @@ namespace KingICT.Services
 {
 	public interface IAuthRepository
 	{
-		Task<List<Accounts>> GetAccounts();
-		Task<string> Login(Accounts account);
+		Task<List<AccountsDBO>> GetAccounts();
+		Task<AccountsDTO> Login(AccountsDBO account);
 		Task<AccountsDTO> GetCurrentAccount(string authToken);
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 namespace KingICT.Models
 {
-	public class Accounts
+	public class AccountsDBO
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }

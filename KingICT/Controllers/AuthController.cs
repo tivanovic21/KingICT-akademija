@@ -18,7 +18,7 @@ namespace KingICT.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        public async Task<ActionResult<List<Accounts>>> GetAccounts()
+        public async Task<ActionResult<List<AccountsDBO>>> GetAccounts()
         {
             var accounts = await _authRepository.GetAccounts();
 
@@ -29,18 +29,30 @@ namespace KingICT.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        public async Task<ActionResult<string>> Login([FromBody] Accounts account)
+        public async Task<ActionResult<string>> Login([FromBody] AccountsDBO account)
         {
-            if (account == null) return "Account does not exist!";
+            if (account == null) BadRequest("Username or password not provided!");
             if(string.IsNullOrEmpty(account.Username) || string.IsNullOrEmpty(account.Password))
             {
-                return "Invalid credentials!";
+                return Unauthorized("Invalid credentials");
             }
 
             try
             {
-                var authToken = await _authRepository.Login(account);
-                return authToken;
+                var loggedUser = await _authRepository.Login(account);
+                if (loggedUser == null) return NotFound("Account not found!");
+
+                var jwt = JwtService.GenerateJWT(loggedUser);
+                if (string.IsNullOrEmpty(jwt)) return StatusCode(500, "Error while generating JWT");
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                };
+                Response.Cookies.Append("jwt", jwt, cookieOptions);
+
+                return Ok("Login Successful!");
             }catch (UnauthorizedAccessException ex)
             {
                 return Unauthorized("Invalid credentials");
