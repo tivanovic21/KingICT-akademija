@@ -48,27 +48,6 @@ namespace KingICT.Services
             var accountReposnse = await response.Content.ReadFromJsonAsync<AccountsDTO>();
             return accountReposnse;
         }
-
-
-        public async Task<AccountsDTO> GetCurrentAccount(string authToken)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, "auth/me");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authToken);
-
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            };
-
-            var accountResponse = JsonSerializer.Deserialize<AccountsDTO>(jsonResponse, options);
-            return accountResponse;
-        }
     }
 }
 

@@ -8,7 +8,6 @@ namespace KingICT.Services
 	{
 		Task<List<Accounts>> GetAccounts();
 		Task<AccountsDTO> Login(Accounts account);
-		Task<AccountsDTO> GetCurrentAccount(string authToken);
 	}
 }
 

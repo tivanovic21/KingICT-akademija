@@ -2,6 +2,7 @@
 using KingICT.DTO;
 using KingICT.Models;
 using KingICT.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KingICT.Controllers
@@ -61,25 +62,6 @@ namespace KingICT.Controllers
             }catch (Exception ex)
             {
                 return $"Error: {ex.Message}";
-            }
-        }
-
-        [HttpGet("getCurrentAccount")]
-        [Produces("application/json")]
-        public async Task<ActionResult<AccountsDTO>> GetCurrentAccount([FromHeader] string authToken)
-        {
-            if (string.IsNullOrEmpty(authToken))
-            {
-                throw new Exception("Authorization token not provided!");
-            }
-
-            try
-            {
-                var account = await _authRepository.GetCurrentAccount(authToken);
-                return account;
-            } catch(HttpRequestException ex)
-            {
-                return Unauthorized("Invalid authorization token provided!");
             }
         }
 
