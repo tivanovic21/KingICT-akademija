@@ -37,7 +37,11 @@ namespace KingICT.Services
 
         public async Task<string> Login(Accounts account)
         {
-            var body = new { account.Username, account.Password };
+            var allAccounts = await GetAccounts();
+            var selectedAccount = allAccounts.FirstOrDefault(u => u.Username == account.Username);
+            if (selectedAccount == null) throw new ArgumentException("Account not found!");
+
+            var body = new { selectedAccount.Username, account.Password };
             var response = await _httpClient.PostAsJsonAsync("auth/login", body);
             response.EnsureSuccessStatusCode();
 
