@@ -25,6 +25,29 @@ namespace KingICT.Controllers
 
             return Ok(account);
         }
+
+        [HttpPost]
+        [Produces("application/json")]
+        public async Task<ActionResult<string>> Login([FromBody] Accounts account)
+        {
+            if (account == null) return "Account does not exist!";
+            if(string.IsNullOrEmpty(account.Username) || string.IsNullOrEmpty(account.Password))
+            {
+                return "Invalid credentials!";
+            }
+
+            try
+            {
+                var authToken = await _authRepository.Login(account);
+                return authToken;
+            }catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized("Invalid credentials");
+            }catch (Exception ex)
+            {
+                return $"Error: {ex.Message}";
+            }
+        }
     }
 }
 

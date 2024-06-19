@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using KingICT.Data;
+using KingICT.DTO;
 using KingICT.Models;
 
 namespace KingICT.Services
@@ -16,8 +17,8 @@ namespace KingICT.Services
             _httpClient = httpClient;
 		}
 
-        public async Task<Accounts>GetAccount()
-        {
+        public async Task<Accounts> GetAccount()
+        { 
             var response = await _httpClient.GetAsync("users/1");
             response.EnsureSuccessStatusCode();
 
@@ -31,6 +32,18 @@ namespace KingICT.Services
 
             var accountResponse = JsonSerializer.Deserialize<Accounts>(jsonResponse, options);
             return accountResponse;
+        }
+
+        public async Task<string> Login(Accounts account)
+        {
+            var body = new { account.Username, account.Password };
+            var response = await _httpClient.PostAsJsonAsync("auth/login", body);
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadFromJsonAsync<AccountsDTO>();
+            var authToken = jsonResponse.Token;
+
+            return authToken;
         }
     }
 }
