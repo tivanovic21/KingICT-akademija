@@ -18,13 +18,13 @@ namespace KingICT.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        public async Task<ActionResult<Accounts>> GetAccount()
+        public async Task<ActionResult<List<Accounts>>> GetAccounts()
         {
-            var account = await _authRepository.GetAccount();
+            var accounts = await _authRepository.GetAccounts();
 
-            if (account == null) return NotFound();
+            if (accounts == null) return NotFound();
 
-            return Ok(account);
+            return Ok(accounts);
         }
 
         [HttpPost]

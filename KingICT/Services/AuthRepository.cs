@@ -18,9 +18,9 @@ namespace KingICT.Services
             _httpClient = httpClient;
 		}
 
-        public async Task<Accounts> GetAccount()
-        { 
-            var response = await _httpClient.GetAsync("users/1");
+        public async Task<List<Accounts>> GetAccounts()
+        {
+            var response = await _httpClient.GetAsync("users");
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -31,8 +31,8 @@ namespace KingICT.Services
                 IgnoreNullValues = true,
             };
 
-            var accountResponse = JsonSerializer.Deserialize<Accounts>(jsonResponse, options);
-            return accountResponse;
+            var accountResponse = JsonSerializer.Deserialize<AccountsResponse>(jsonResponse, options);
+            return accountResponse.Users;
         }
 
         public async Task<string> Login(Accounts account)
