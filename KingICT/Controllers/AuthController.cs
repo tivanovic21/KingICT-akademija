@@ -20,7 +20,7 @@ namespace KingICT.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        public async Task<ActionResult<List<AccountsDBO>>> GetAccounts()
+        public async Task<ActionResult<List<Accounts>>> GetAccounts()
         {
             var accounts = await _authRepository.GetAccounts();
 
@@ -31,7 +31,7 @@ namespace KingICT.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        public async Task<ActionResult<string>> Login([FromBody] AccountsDBO account)
+        public async Task<ActionResult<string>> Login([FromBody] Accounts account)
         {
             if (account == null) BadRequest("Username or password not provided!");
             if(string.IsNullOrEmpty(account.Username) || string.IsNullOrEmpty(account.Password))

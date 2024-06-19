@@ -18,7 +18,7 @@ namespace KingICT.Services
             _httpClient = httpClient;
 		}
 
-        public async Task<List<AccountsDBO>> GetAccounts()
+        public async Task<List<Accounts>> GetAccounts()
         {
             var response = await _httpClient.GetAsync("users");
             response.EnsureSuccessStatusCode();
@@ -35,7 +35,7 @@ namespace KingICT.Services
             return accountResponse.Users;
         }
 
-        public async Task<AccountsDTO> Login(AccountsDBO account)
+        public async Task<AccountsDTO> Login(Accounts account)
         {
             var allAccounts = await GetAccounts();
             var selectedAccount = allAccounts.FirstOrDefault(u => u.Username == account.Username);

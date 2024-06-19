@@ -7,7 +7,7 @@ namespace KingICT.DTO
 	public class AccountsResponse
 	{
         [JsonPropertyName("users")]
-        public List<AccountsDBO> Users { get; set; }
+        public List<Accounts> Users { get; set; }
     }
 }
 
