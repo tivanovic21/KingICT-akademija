@@ -9,6 +9,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<JwtService>();
 
 // Add HTTP client for Product repo
 builder.Services.AddHttpClient<IProductRepository, ProductRepository>(client =>

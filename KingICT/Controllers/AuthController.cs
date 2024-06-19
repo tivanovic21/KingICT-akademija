@@ -11,9 +11,11 @@ namespace KingICT.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepository;
-        public AuthController(IAuthRepository authRepository)
+        private readonly JwtService _jwtService;
+        public AuthController(IAuthRepository authRepository, JwtService jwtService)
         {
             _authRepository = authRepository;
+            _jwtService = jwtService;
         }
 
         [HttpGet]
@@ -42,7 +44,7 @@ namespace KingICT.Controllers
                 var loggedUser = await _authRepository.Login(account);
                 if (loggedUser == null) return NotFound("Account not found!");
 
-                var jwt = JwtService.GenerateJWT(loggedUser);
+                var jwt = _jwtService.GenerateJWT(loggedUser);
                 if (string.IsNullOrEmpty(jwt)) return StatusCode(500, "Error while generating JWT");
                 var cookieOptions = new CookieOptions
                 {
