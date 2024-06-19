@@ -13,6 +13,8 @@ namespace KingICT.Controllers
     {
         private readonly IAuthRepository _authRepository;
         private readonly JwtService _jwtService;
+        private readonly TokenBlacklistService _tokenBlacklistService;
+
         public AuthController(IAuthRepository authRepository, JwtService jwtService)
         {
             _authRepository = authRepository;
@@ -70,6 +72,7 @@ namespace KingICT.Controllers
         {
             if (Request.Cookies.ContainsKey("jwt"))
             {
+                var token = Request.Cookies["jwt"];
                 var cookieOptions = new CookieOptions
                 {
                     Expires = DateTime.UtcNow.AddDays(-1),
@@ -78,6 +81,7 @@ namespace KingICT.Controllers
                     SameSite = SameSiteMode.Strict
                 };
                 Response.Cookies.Append("jwt", "", cookieOptions);
+                _tokenBlacklistService.BlacklistToken(token);
             }
 
             return Ok("Logout Successful!");

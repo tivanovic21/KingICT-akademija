@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -35,6 +36,13 @@ builder.Services.AddAuthentication(options =>
         {
             if (context.Request.Cookies.ContainsKey("jwt"))
             {
+                var token = context.Request.Cookies["jwt"];
+                var tokenBlacklistService = new TokenBlacklistService();
+                if (tokenBlacklistService.isTokenBlacklisted(token))
+                {
+                    context.Fail("This token is blacklisted!");
+                }
+
                 context.Token = context.Request.Cookies["jwt"];
             }
             return Task.CompletedTask;
