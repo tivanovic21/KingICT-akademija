@@ -82,6 +82,24 @@ namespace KingICT.Controllers
                 return Unauthorized("Invalid authorization token provided!");
             }
         }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            if (Request.Cookies.ContainsKey("jwt"))
+            {
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.UtcNow.AddDays(-1),
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                };
+                Response.Cookies.Append("jwt", "", cookieOptions);
+            }
+
+            return Ok("Logout Successful!");
+        }
     }
 }
 
