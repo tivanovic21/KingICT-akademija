@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using FakeItEasy;
 using KingICT.Controllers;
 using KingICT.DTO;
@@ -192,6 +193,39 @@ namespace UnitTests
             var serverErrorResult = Assert.IsType<ObjectResult>(actionResult.Result);
             Assert.Equal(500, serverErrorResult.StatusCode);
             Assert.Equal("Error while generating JWT", serverErrorResult.Value);
+        }
+
+        [Fact]
+        public async Task Login_WhenLoginIsSuccessful_ReturnsOk()
+        {
+            // Arrange
+            var account = new Accounts { Username = "emilys", Password = "emilyspass" };
+            var accountsDTO = new AccountsDTO
+            {
+                Id = 1,
+                Email = "emilys@email.com",
+                FirstName = "Emilys",
+                LastName = "EmilysLastName",
+                Gender = "Female",
+                Image = "sample-image.com",
+                Token = "sample-token",
+                RefreshToken = "sample-refresh-token"
+            };
+            var validJwt = "valid-jwt";
+            A.CallTo(() => _fakeRepo.Login(account)).Returns(Task.FromResult(accountsDTO));
+            A.CallTo(() => _fakeJwtService.GenerateJWT(accountsDTO)).Returns(validJwt);
+
+            // Act
+            var result = await _authController.Login(account);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<string>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var setCookieHeader = _authController.HttpContext.Response.Headers["Set-Cookie"].ToString();
+
+            Assert.Contains("jwt", setCookieHeader);
+            Assert.Contains(validJwt, setCookieHeader);
+            Assert.Equal("Login Successful!", okResult.Value);
         }
     }
 }
