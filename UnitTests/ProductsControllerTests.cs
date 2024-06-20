@@ -193,6 +193,167 @@ namespace UnitTests
                 Assert.Equal(fakeProducts[i].Title, returnValue[i].Title);
             }
         }
+
+        [Fact]
+        public async Task FilterProducts_WhenProductsAreNull_ReturnsNotFound()
+        {
+            // Arrange
+            A.CallTo(() => _fakeRepo.FilterProducts("", null)).Returns(Task.FromResult<List<Products>>(null));
+
+            // Act
+            var result = await _productsController.FilterProducts("", null);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
+        }
+
+
+        [Fact]
+        public async Task FilterProducts_WhenCategoryAndPriceAreNotProvided_ReturnsNotFound()
+        {
+            // Arrange
+            A.CallTo(() => _fakeRepo.FilterProducts("", null)).Returns(Task.FromResult<List<Products>>(null));
+
+            // Act
+            var result = await _productsController.FilterProducts("", null);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
+        }
+
+
+        [Fact]
+        public async Task FilterProducts_WhenCategoryIsProvidedButProductsAreEmpty_ReturnsEmptyList()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+            };
+            string category = "beauty";
+            A.CallTo(() => _fakeRepo.FilterProducts(category, null)).Returns(Task.FromResult(fakeProducts));
+
+            // Act
+            var result = await _productsController.FilterProducts(category, null);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnValue);
+        }
+
+        [Fact]
+        public async Task FilterProducts_WhenCategoryIsProvidedAndProductsExist_ReturnsProducts()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+                new Products {Id = 1, Title = "product1", Description = "prod1", Category = "beauty", Price = 1.2, Thumbnail = "sample.jpeg"},
+            };
+            string category = "beauty";
+            A.CallTo(() => _fakeRepo.FilterProducts(category, null)).Returns(Task.FromResult(fakeProducts));
+
+            // Act
+            var result = await _productsController.FilterProducts(category, null);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnValue);
+        }
+
+        [Fact]
+        public async Task FilterProducts_WhenPriceIsProvidedButProductsAreEmpty_ReturnsEmptyList()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+            };
+            double price = 1.2;
+            A.CallTo(() => _fakeRepo.FilterProducts("", price)).Returns(Task.FromResult(fakeProducts));
+
+            // Act
+            var result = await _productsController.FilterProducts("", price);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnValue);
+        }
+
+        [Fact]
+        public async Task FilterProducts_WhenPriceIsProvidedAndProductsExist_ReturnsProducts()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+                new Products {Id = 1, Title = "product1", Description = "prod1", Category = "beauty", Price = 1.2, Thumbnail = "sample.jpeg"},
+            };
+            double price = 1.2;
+            A.CallTo(() => _fakeRepo.FilterProducts("", price)).Returns(Task.FromResult(fakeProducts));
+
+            // Act
+            var result = await _productsController.FilterProducts("", price);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnValue);
+        }
+
+        [Fact]
+        public async Task FilterProducts_WhenCategoryAndPriceAreProvidedButProductsAreEmpty_ReturnsEmptyList()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+            };
+            string category = "beauty";
+            double price = 1.2;
+            A.CallTo(() => _fakeRepo.FilterProducts(category, price)).Returns(Task.FromResult(fakeProducts));
+
+            // Act
+            var result = await _productsController.FilterProducts(category, price);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnValue);
+        }
+
+        [Fact]
+        public async Task FilterProducts_WhenCategoryAndPriceAreProvidedAndProductsExist_ReturnsProducts()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+                new Products {Id = 1, Title = "product1", Description = "prod1", Category = "beauty", Price = 1.2, Thumbnail = "sample.jpeg"},
+            };
+            string category = "beauty";
+            double price = 1.2;
+            A.CallTo(() => _fakeRepo.FilterProducts(category, price)).Returns(Task.FromResult(fakeProducts));
+
+            // Act
+            var result = await _productsController.FilterProducts(category, price);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnValue);
+        }
     }
 }
 
