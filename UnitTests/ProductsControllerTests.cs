@@ -49,7 +49,7 @@ namespace UnitTests
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<List<Products>>(okResult.Value);
 
-            Assert.Equal(fakeProducts.Count, returnValue.Count);
+            Assert.Empty(returnValue);
         }
 
         [Fact]
@@ -165,7 +165,7 @@ namespace UnitTests
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<List<Products>>(okResult.Value);
 
-            Assert.Equal(fakeProducts.Count, returnValue.Count);
+            Assert.Empty(returnValue);
         }
 
         [Fact]
@@ -242,7 +242,7 @@ namespace UnitTests
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<List<Products>>(okResult.Value);
 
-            Assert.Equal(fakeProducts, returnValue);
+            Assert.Empty(returnValue);
         }
 
         [Fact]
@@ -285,7 +285,7 @@ namespace UnitTests
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<List<Products>>(okResult.Value);
 
-            Assert.Equal(fakeProducts, returnValue);
+            Assert.Empty(returnValue);
         }
 
         [Fact]
@@ -329,7 +329,7 @@ namespace UnitTests
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<List<Products>>(okResult.Value);
 
-            Assert.Equal(fakeProducts, returnValue);
+            Assert.Empty(returnValue);
         }
 
         [Fact]

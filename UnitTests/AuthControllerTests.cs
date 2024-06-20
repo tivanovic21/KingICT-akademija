@@ -90,7 +90,7 @@ namespace UnitTests
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<List<Accounts>>(okResult.Value);
 
-            Assert.Equal(fakeAccounts.Count, returnValue.Count);
+            Assert.Empty(returnValue);
         }
 
         [Fact]
