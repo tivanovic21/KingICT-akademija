@@ -34,7 +34,7 @@ namespace KingICT.Controllers
         {
             var accounts = await _authRepository.GetAccounts();
 
-            if (accounts == null) return NotFound();
+            if (accounts == null || accounts.Count == 0) return NotFound();
 
             return Ok(accounts);
         }

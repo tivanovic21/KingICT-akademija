@@ -36,7 +36,7 @@ namespace KingICT.Controllers
         {
             var products = await _productRepository.GetProducts();
 
-            if (products == null) return NotFound();
+            if (products == null || products.Count == 0) return NotFound();
 
             return Ok(products);
         }
@@ -79,7 +79,7 @@ namespace KingICT.Controllers
 
             var products = await _productRepository.GetProductsByName(title);
 
-            if (products == null) return NotFound();
+            if (products == null || products.Count == 0) return NotFound();
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
@@ -111,7 +111,7 @@ namespace KingICT.Controllers
 
             var products = await _productRepository.FilterProducts(category, price);
 
-            if (products == null) return NotFound();
+            if (products == null || products.Count == 0) return NotFound();
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));

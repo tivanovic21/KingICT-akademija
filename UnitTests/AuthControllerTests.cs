@@ -74,7 +74,7 @@ namespace UnitTests
         }
 
         [Fact]
-        public async Task GetAccounts_WhenAccountsAreEmpty_ReturnsEmptyList()
+        public async Task GetAccounts_WhenAccountsAreEmpty_ReturnsNotFound()
         {
             // Arrange
             var fakeAccounts = new List<Accounts>
@@ -87,10 +87,7 @@ namespace UnitTests
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<List<Accounts>>>(result);
-            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<Accounts>>(okResult.Value);
-
-            Assert.Empty(returnValue);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
 
         [Fact]

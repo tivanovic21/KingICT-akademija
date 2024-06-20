@@ -39,7 +39,7 @@ namespace UnitTests
         }
 
         [Fact]
-        public async Task GetProducts_WhenProductsAreEmpty_ReturnsEmptyList()
+        public async Task GetProducts_WhenProductsAreEmpty_ReturnsNotFound()
         {
             // Arrange
             var fakeProducts = new List<Products>
@@ -52,10 +52,7 @@ namespace UnitTests
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
-            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
-
-            Assert.Empty(returnValue);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
 
         [Fact]
@@ -155,7 +152,7 @@ namespace UnitTests
         }
 
         [Fact]
-        public async Task GetProductsByName_WhenProductsDoNotExist_ReturnsEmptyList()
+        public async Task GetProductsByName_WhenProductsDoNotExist_ReturnsNotFound()
         {
             // Arrange
             var fakeProducts = new List<Products>
@@ -168,10 +165,7 @@ namespace UnitTests
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
-            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
-
-            Assert.Empty(returnValue);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
 
         [Fact]
@@ -260,7 +254,7 @@ namespace UnitTests
 
 
         [Fact]
-        public async Task FilterProducts_WhenCategoryIsProvidedButProductsAreEmpty_ReturnsEmptyList()
+        public async Task FilterProducts_WhenCategoryIsProvidedButProductsAreEmpty_ReturnsNotFound()
         {
             // Arrange
             var fakeProducts = new List<Products>
@@ -274,10 +268,7 @@ namespace UnitTests
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
-            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
-
-            Assert.Empty(returnValue);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
 
         [Fact]
@@ -303,7 +294,7 @@ namespace UnitTests
         }
 
         [Fact]
-        public async Task FilterProducts_WhenPriceIsProvidedButProductsAreEmpty_ReturnsEmptyList()
+        public async Task FilterProducts_WhenPriceIsProvidedButProductsAreEmpty_ReturnsNotFound()
         {
             // Arrange
             var fakeProducts = new List<Products>
@@ -317,10 +308,7 @@ namespace UnitTests
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
-            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
-
-            Assert.Empty(returnValue);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
 
         [Fact]
@@ -346,7 +334,7 @@ namespace UnitTests
         }
 
         [Fact]
-        public async Task FilterProducts_WhenCategoryAndPriceAreProvidedButProductsAreEmpty_ReturnsEmptyList()
+        public async Task FilterProducts_WhenCategoryAndPriceAreProvidedButProductsAreEmpty_ReturnsNotFound()
         {
             // Arrange
             var fakeProducts = new List<Products>
@@ -361,10 +349,7 @@ namespace UnitTests
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
-            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<Products>>(okResult.Value);
-
-            Assert.Empty(returnValue);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
 
         [Fact]
