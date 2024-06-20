@@ -5,20 +5,23 @@ using KingICT.Models;
 using KingICT.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace UnitTests
 {
 	public class ProductsControllerTests
 	{
         private readonly IProductRepository _fakeRepo;
-        private readonly IMemoryCache _memoryCache;
+        private readonly IMemoryCache _fakeMemoryCache;
+        private readonly ILogger<ProductsController> _fakeLogger;
         private readonly ProductsController _productsController;
 
         public ProductsControllerTests()
 		{
             _fakeRepo = A.Fake<IProductRepository>();
-            _memoryCache = A.Fake<IMemoryCache>();
-            _productsController = new ProductsController(_fakeRepo, _memoryCache);
+            _fakeMemoryCache = A.Fake<IMemoryCache>();
+            _fakeLogger = A.Fake<ILogger<ProductsController>>();
+            _productsController = new ProductsController(_fakeRepo, _fakeMemoryCache, _fakeLogger);
         }
 
         [Fact]
