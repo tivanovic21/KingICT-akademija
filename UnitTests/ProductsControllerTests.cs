@@ -201,6 +201,35 @@ namespace UnitTests
         }
 
         [Fact]
+        public async Task GetProductsByName_WhenProductsAreInCache_ReturnsProducts()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+                new Products { Id = 1, Title = "Cached", Description = "prod", Category = "prod", Price = 1.2, Thumbnail = "sample.jpeg" }
+            };
+
+            var memoryCache = new MemoryCache(new MemoryCacheOptions());
+            var cacheKey = "FilterProducts-Cached";
+            memoryCache.Set(cacheKey, fakeProducts);
+
+            var mockLogger = A.Fake<ILogger<ProductsController>>();
+            var mockProductRepository = A.Fake<IProductRepository>();
+            var productsController = new ProductsController(mockProductRepository, memoryCache, mockLogger);
+
+            // Act
+            var result = await productsController.GetProductsByName("Cached");
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnedProducts = Assert.IsAssignableFrom<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnedProducts);
+        }
+
+
+        [Fact]
         public async Task FilterProducts_WhenProductsAreNull_ReturnsNotFound()
         {
             // Arrange

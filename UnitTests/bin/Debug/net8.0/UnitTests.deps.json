@@ -1463,6 +1463,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.6",
           "Microsoft.EntityFrameworkCore": "8.0.6",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.6",
+          "Microsoft.Extensions.Caching.Memory": "8.0.0",
           "Swashbuckle.AspNetCore": "6.6.2",
           "System.IdentityModel.Tokens.Jwt": "7.6.1"
         },
