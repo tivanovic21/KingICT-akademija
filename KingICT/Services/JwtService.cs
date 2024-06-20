@@ -8,8 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace KingICT.Services
 {
-	public class JwtService
-	{
+	public class JwtService : IJwtService
+    {
 		private readonly JwtSettings _jwtSettings;
 		public JwtService(IConfiguration configuration)
 		{
