@@ -24,6 +24,12 @@ namespace KingICT.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Retrieves a list of all products.
+        /// </summary>
+        /// <returns>A list of products if found, otherwise NotFound.</returns>
+        /// <response code="200">Returns the list of products.</response>
+        /// <response code="404">If no products are found.</response>
         [HttpGet]
         [Produces("application/json")]
         public async Task<ActionResult<List<Products>>> GetProducts()
@@ -35,6 +41,13 @@ namespace KingICT.Controllers
             return Ok(products);
         }
 
+        /// <summary>
+        /// Retrieves a product by its unique identifier (Id).
+        /// </summary>
+        /// <param name="id">The unique identifier of the product.</param>
+        /// <returns>The product if found, otherwise NotFound.</returns>
+        /// <response code="200">Returns the product.</response>
+        /// <response code="404">If the product is not found.</response>
         [HttpGet("{id}")]
         [Produces("application/json")]
         public async Task<ActionResult<Products>> GetProductById(int id)
@@ -46,6 +59,13 @@ namespace KingICT.Controllers
             return Ok(product);
         }
 
+        /// <summary>
+        /// Retrieves a list of products by their title. The results are cached for 5 minutes.
+        /// </summary>
+        /// <param name="title">The title of the products to search for.</param>
+        /// <returns>A list of products if found, otherwise NotFound.</returns>
+        /// <response code="200">Returns the list of products.</response>
+        /// <response code="404">If no products are found.</response>
         [HttpGet("search")]
         [Produces("application/json")]
         public async Task<ActionResult<List<Products>>> GetProductsByName([FromQuery] string title)
@@ -69,6 +89,14 @@ namespace KingICT.Controllers
             return Ok(products);
         }
 
+        /// <summary>
+        /// Retrieves a list of products filtered by category and/or price. The results are cached for 5 minutes.
+        /// </summary>
+        /// <param name="category">The category of the products to filter by. This parameter is optional.</param>
+        /// <param name="price">The price of the products to filter by. This parameter is optional.</param>
+        /// <returns>A list of products if found, otherwise NotFound.</returns>
+        /// <response code="200">Returns the list of products.</response>
+        /// <response code="404">If no products are found.</response>
         [HttpGet("filter")]
         [Produces("application/json")]
         public async Task<ActionResult<List<Products>>> FilterProducts([FromQuery] string? category, double? price)
