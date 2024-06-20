@@ -4,18 +4,21 @@ using KingICT.Controllers;
 using KingICT.Models;
 using KingICT.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace UnitTests
 {
 	public class ProductsControllerTests
 	{
         private readonly IProductRepository _fakeRepo;
+        private readonly IMemoryCache _memoryCache;
         private readonly ProductsController _productsController;
 
         public ProductsControllerTests()
 		{
             _fakeRepo = A.Fake<IProductRepository>();
-            _productsController = new ProductsController(_fakeRepo);
+            _memoryCache = A.Fake<IMemoryCache>();
+            _productsController = new ProductsController(_fakeRepo, _memoryCache);
         }
 
         [Fact]
