@@ -13,13 +13,13 @@ namespace UnitTests
 	{
         private readonly IAuthRepository _fakeRepo;
 		private readonly AuthController _authController;
-        private readonly JwtService _fakeJwtService;
+        private readonly IJwtService _fakeJwtService;
         private readonly ITokenBlacklistService _fakeTokenBlacklistService;
 
         public AuthControllerTests()
 		{
             _fakeRepo = A.Fake<IAuthRepository>();
-			_fakeJwtService = A.Fake<JwtService>();
+			_fakeJwtService = A.Fake<IJwtService>();
 			_fakeTokenBlacklistService = A.Fake<ITokenBlacklistService>();
 			_authController = new AuthController(_fakeRepo, _fakeJwtService, _fakeTokenBlacklistService);
 

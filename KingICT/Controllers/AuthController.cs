@@ -12,10 +12,10 @@ namespace KingICT.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepository;
-        private readonly JwtService _jwtService;
+        private readonly IJwtService _jwtService;
         private readonly ITokenBlacklistService _tokenBlacklistService;
 
-        public AuthController(IAuthRepository authRepository, JwtService jwtService, ITokenBlacklistService tokenBlacklistService)
+        public AuthController(IAuthRepository authRepository, IJwtService jwtService, ITokenBlacklistService tokenBlacklistService)
         {
             _authRepository = authRepository;
             _jwtService = jwtService;
