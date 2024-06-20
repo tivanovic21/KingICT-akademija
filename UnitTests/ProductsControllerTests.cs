@@ -389,6 +389,34 @@ namespace UnitTests
 
             Assert.Equal(fakeProducts, returnValue);
         }
+
+        [Fact]
+        public async Task FilterProducts_WhenProductsAreInCache_ReturnsProducts()
+        {
+            // Arrange
+            var fakeProducts = new List<Products>
+            {
+                new Products { Id = 1, Title = "prod", Description = "prod", Category = "beauty", Price = 10, Thumbnail = "sample.jpeg" }
+            };
+
+            var memoryCache = new MemoryCache(new MemoryCacheOptions());
+            var cacheKey = "FilterProducts-beauty-10";
+            memoryCache.Set(cacheKey, fakeProducts);
+
+            var mockLogger = A.Fake<ILogger<ProductsController>>();
+            var mockProductRepository = A.Fake<IProductRepository>();
+            var productsController = new ProductsController(mockProductRepository, memoryCache, mockLogger);
+
+            // Act
+            var result = await productsController.FilterProducts("beauty", 10);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<Products>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var returnedProducts = Assert.IsAssignableFrom<List<Products>>(okResult.Value);
+
+            Assert.Equal(fakeProducts, returnedProducts);
+        }
     }
 }
 
