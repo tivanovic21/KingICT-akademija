@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using FakeItEasy;
 using KingICT.Controllers;
@@ -239,6 +240,39 @@ namespace UnitTests
 
             var actionResult = Assert.IsType<UnauthorizedObjectResult>(result);
             Assert.Equal("Must be logged in to use this feature!", actionResult.Value);
+        }
+
+        [Fact]
+        public void Logout_WhenJwtCookieExists_ReturnsOk()
+        {
+            // Arrange
+            var fakeHttpContext = A.Fake<HttpContext>();
+            var fakeHttpRequest = A.Fake<HttpRequest>();
+            var fakeCookies = A.Fake<IRequestCookieCollection>();
+
+            var blacklistedTokens = new List<string>();
+
+            A.CallTo(() => fakeCookies.ContainsKey(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => fakeCookies[A<string>.Ignored]).Returns("valid-jwt");
+            A.CallTo(() => fakeHttpRequest.Cookies).Returns(fakeCookies);
+            A.CallTo(() => fakeHttpContext.Request).Returns(fakeHttpRequest);
+
+            A.CallTo(() => _fakeTokenBlacklistService.BlacklistToken(A<string>.Ignored))
+                .Invokes((string token) => blacklistedTokens.Add(token));
+
+            A.CallTo(() => _fakeTokenBlacklistService.isTokenBlacklisted(A<string>.Ignored))
+                .ReturnsLazily((string token) => blacklistedTokens.Contains(token));
+
+            _authController.ControllerContext.HttpContext = fakeHttpContext;
+
+            // Act
+            var result = _authController.Logout();
+            var blacklistResult = _fakeTokenBlacklistService.isTokenBlacklisted("valid-jwt");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.True(blacklistResult);
+            Assert.Equal("Logout Successful!", okResult.Value);
         }
     }
 }
