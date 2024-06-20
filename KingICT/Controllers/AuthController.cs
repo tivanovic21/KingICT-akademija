@@ -37,7 +37,7 @@ namespace KingICT.Controllers
         [Produces("application/json")]
         public async Task<ActionResult<string>> Login([FromBody] Accounts account)
         {
-            if (account == null) BadRequest("Username or password not provided!");
+            if (account == null) return BadRequest("Username or password not provided!");
             if(string.IsNullOrEmpty(account.Username) || string.IsNullOrEmpty(account.Password))
             {
                 return Unauthorized("Invalid credentials");

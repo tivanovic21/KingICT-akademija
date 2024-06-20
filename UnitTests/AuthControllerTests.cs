@@ -3,6 +3,7 @@ using FakeItEasy;
 using KingICT.Controllers;
 using KingICT.Models;
 using KingICT.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UnitTests
@@ -20,6 +21,12 @@ namespace UnitTests
 			_fakeJwtService = A.Fake<JwtService>();
 			_fakeTokenBlacklistService = A.Fake<ITokenBlacklistService>();
 			_authController = new AuthController(_fakeRepo, _fakeJwtService, _fakeTokenBlacklistService);
+
+            var context = new DefaultHttpContext();
+            _authController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = context
+            };
         }
 		
         [Fact]
@@ -81,6 +88,16 @@ namespace UnitTests
             var returnValue = Assert.IsType<List<Accounts>>(okResult.Value);
 
             Assert.Equal(fakeAccounts.Count, returnValue.Count);
+        }
+
+        [Fact]
+        public async Task Login_WhenAccountIsNull_ReturnsBadRequest()
+        {
+            var result = await _authController.Login(null);
+
+            var actionResult = Assert.IsType<ActionResult<string>>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+            Assert.Equal("Username or password not provided!", badRequestResult.Value);
         }
 	}
 }
