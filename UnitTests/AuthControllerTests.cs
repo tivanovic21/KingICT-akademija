@@ -227,6 +227,19 @@ namespace UnitTests
             Assert.Contains(validJwt, setCookieHeader);
             Assert.Equal("Login Successful!", okResult.Value);
         }
+
+        [Fact]
+        public void Logout_WhenJwtCookieIsNotPresent_ReturnsUnauthorized()
+        {
+            // Act
+            var result = _authController.Logout();
+
+            // Assert
+            A.CallTo(() => _fakeTokenBlacklistService.BlacklistToken(A<string>.Ignored)).MustNotHaveHappened();
+
+            var actionResult = Assert.IsType<UnauthorizedObjectResult>(result);
+            Assert.Equal("Must be logged in to use this feature!", actionResult.Value);
+        }
     }
 }
 

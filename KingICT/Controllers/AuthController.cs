@@ -82,12 +82,11 @@ namespace KingICT.Controllers
                     SameSite = SameSiteMode.Strict
                 };
 
-                Console.WriteLine($"token for logout: {token}");
                 _tokenBlacklistService.BlacklistToken(token);
                 Response.Cookies.Append("jwt", "", cookieOptions);
+                return Ok("Logout Successful!");
             }
-
-            return Ok("Logout Successful!");
+            return Unauthorized("Must be logged in to use this feature!");
         }
     }
 }
