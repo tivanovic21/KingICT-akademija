@@ -22,6 +22,12 @@ namespace KingICT.Controllers
             _tokenBlacklistService = tokenBlacklistService;
         }
 
+        /// <summary>
+        /// Retrieves a list of accounts that can be used for Login.
+        /// </summary>
+        /// <returns>A list of accounts if found, otherwise NotFound.</returns>
+        /// <response code="200">Returns the list of accounts.</response>
+        /// <response code="404">If no accounts are found.</response>
         [HttpGet]
         [Produces("application/json")]
         public async Task<ActionResult<List<Accounts>>> GetAccounts()
@@ -33,6 +39,16 @@ namespace KingICT.Controllers
             return Ok(accounts);
         }
 
+        /// <summary>
+        /// Logs in a user by validating their credentials and generating a JWT for them.
+        /// </summary>
+        /// <param name="account">The account object containing the username and password of the user.</param>
+        /// <returns>A string indicating the result of the login operation.</returns>
+        /// <response code="200">Returns the success message if login is successful.</response>
+        /// <response code="400">If the account object is null or username or password is not provided.</response>
+        /// <response code="401">If the credentials are invalid or unauthorized.</response>
+        /// <response code="404">If the account is not found.</response>
+        /// <response code="500">If there is an error while generating the JWT.</response>
         [HttpPost]
         [Produces("application/json")]
         public async Task<ActionResult<string>> Login([FromBody] Accounts account)
@@ -68,6 +84,12 @@ namespace KingICT.Controllers
             }
         }
 
+        /// <summary>
+        /// Logs out the user by blacklisting their JWT (JSON Web Token) and removing it from the cookies.
+        /// </summary>
+        /// <returns>A string indicating the result of the logout operation.</returns>
+        /// <response code="200">Returns the success message if logout is successful.</response>
+        /// <response code="401">If the user is not logged in.</response>
         [HttpPost("logout")]
         public IActionResult Logout()
         {
