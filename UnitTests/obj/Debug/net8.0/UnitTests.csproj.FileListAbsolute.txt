@@ -148,3 +148,4 @@
 /Users/toniivanovic/Projects/KingICT/UnitTests/obj/Debug/net8.0/UnitTests.pdb
 /Users/toniivanovic/Projects/KingICT/UnitTests/obj/Debug/net8.0/UnitTests.genruntimeconfig.cache
 /Users/toniivanovic/Projects/KingICT/UnitTests/obj/Debug/net8.0/ref/UnitTests.dll
+/Users/toniivanovic/Projects/KingICT/UnitTests/obj/Debug/net8.0/UnitTests.sourcelink.json
