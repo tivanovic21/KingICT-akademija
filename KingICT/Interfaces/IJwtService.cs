@@ -6,7 +6,6 @@ namespace KingICT.Services
 	public interface IJwtService
 	{
 		string GenerateJWT(AccountsDTO loggedUser);
-
     }
 }
 

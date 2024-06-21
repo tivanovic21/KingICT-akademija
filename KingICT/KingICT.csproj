@@ -27,6 +27,8 @@
     <None Remove="Services\" />
     <None Remove="Data\" />
     <None Remove="DTO\" />
+    <None Remove="Repositories\" />
+    <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -34,5 +36,7 @@
     <Folder Include="Services\" />
     <Folder Include="Data\" />
     <Folder Include="DTO\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>

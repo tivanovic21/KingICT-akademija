@@ -20,23 +20,21 @@ namespace KingICT.Services
 
         public async Task<List<Products>> FilterProducts(string? category, double? price)
         {
-            if (string.IsNullOrEmpty(category) && !price.HasValue) return null;
-
             var products = await GetProducts();
-            if(string.IsNullOrEmpty(category) && price.HasValue)
-            {
-                return products.Where(p => p.Price <= price)
-                .ToList();
-            } else if(!string.IsNullOrEmpty(category) && !price.HasValue)
-            {
-                return products.Where(p => p.Category.Contains(category, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-            } else
-            {
-                return products.Where(p => p.Category.Contains(category, StringComparison.OrdinalIgnoreCase) && p.Price <= price).ToList();
-            }
-        }
+            if (products == null || products.Count == 0) return new List<Products>();
 
+            var filteredProducts = products.AsQueryable();
+            if (price.HasValue)
+            {
+                filteredProducts = filteredProducts.Where(p => p.Price <= price);
+            }
+            if (!string.IsNullOrEmpty(category))
+            {
+                filteredProducts = filteredProducts.Where(p => p.Category.Contains(category, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return filteredProducts.ToList();
+        }
 
         public async Task<Products> GetProductById(int id)
         {
@@ -71,7 +69,6 @@ namespace KingICT.Services
             var productsResponse = JsonSerializer.Deserialize<ProductsDTO>(jsonResponse, options);
             return productsResponse.Products;
         }
-
 
         public async Task<List<Products>> GetProductsByName(string title)
         {

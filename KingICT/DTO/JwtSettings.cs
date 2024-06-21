@@ -5,7 +5,6 @@ namespace KingICT.Models
 	{
 		public string SecretKey { get; set; }
 		public int ExpiryMinutes { get; set; }
-
     }
 }
 
