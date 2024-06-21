@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
+builder.Services.AddSingleton<ITokenBlacklistService, TokenBlacklistService>();
 
 // Add Memory Caching -> prevent calling endpoint with same parameters 
 builder.Services.AddMemoryCache();
@@ -37,17 +37,33 @@ builder.Services.AddAuthentication(options =>
     {
         OnMessageReceived = context =>
         {
+            var tokenBlacklistService = context.HttpContext.RequestServices.GetRequiredService<ITokenBlacklistService>();
+
+            string token = null;
+
             if (context.Request.Cookies.ContainsKey("jwt"))
             {
-                var token = context.Request.Cookies["jwt"];
-                var tokenBlacklistService = new TokenBlacklistService();
+                token = context.Request.Cookies["jwt"];
+            }
+            else if (context.Request.Headers.ContainsKey("Authorization"))
+            {
+                var authHeader = context.Request.Headers["Authorization"].ToString();
+                if (authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    token = authHeader.Substring("Bearer ".Length).Trim();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(token))
+            {
                 if (tokenBlacklistService.isTokenBlacklisted(token))
                 {
                     context.Fail("This token is blacklisted!");
+                    return Task.CompletedTask;
                 }
-
-                context.Token = context.Request.Cookies["jwt"];
+                context.Token = token;
             }
+
             return Task.CompletedTask;
         }
     };

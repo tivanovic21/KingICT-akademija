@@ -5,6 +5,7 @@ namespace KingICT.Services
 	{
 		void BlacklistToken(string token);
 		bool isTokenBlacklisted(string token);
+		HashSet<string> BlacklistedTokens();
 	}
 }
 

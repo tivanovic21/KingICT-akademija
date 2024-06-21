@@ -3,7 +3,7 @@ namespace KingICT.Services
 {
     public class TokenBlacklistService : ITokenBlacklistService
 	{
-        private readonly HashSet<string> _blacklistedTokens = new HashSet<string>();
+        private HashSet<string> _blacklistedTokens = new HashSet<string>();
 		public TokenBlacklistService()
 		{
 		}
@@ -16,6 +16,11 @@ namespace KingICT.Services
         public bool isTokenBlacklisted(string token)
         {
             return _blacklistedTokens.Contains(token);
+        }
+
+        public HashSet<string> BlacklistedTokens()
+        {
+            return _blacklistedTokens;
         }
     }
 }
