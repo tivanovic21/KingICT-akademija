@@ -28,6 +28,11 @@ Rezultati testova vidljivi su unutar Visual Studia ili terminala ovisno o metodi
 
 Ovaj projekt pokriva funkcionalnosti autentifikacije i autorizacije i funkcionalnosti rada s proizvodima. <br>
 
+### Važna uputa u slučaju testiranja putem terminala!
+Ako se projekt testira putem terminala potrebno je u priložene komande dodati vrijednost tokena u zaglavlje pod atributom Authorization. <br>
+Osnovna sintaksa za to izgleda ovako ```-H 'Authorization: Bearer token'``` s time da "token" mora biti zamijenjen pravom vrijednosti JWT tokena.<br>
+Vrijednost tokena vidljiva je u poruci nakon uspješne prijave. 
+
 ### Auth
 #### GET /api/Auth
 Dohvat liste korisničkih podataka za prijavu s dummyjson.com API-a. Bilo koji račun dohvaćen ovom metodom može se koristiti za prijavu u sustav. 
