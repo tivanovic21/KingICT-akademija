@@ -73,8 +73,9 @@ namespace KingICT.Controllers
                     SameSite = SameSiteMode.Strict
                 };
                 Response.Cookies.Append("jwt", jwt, cookieOptions);
+                loggedUser.Token = jwt;
 
-                return Ok("Login Successful!");
+                return Ok($"Login Successful! JWT: {jwt}");
             }catch (UnauthorizedAccessException ex)
             {
                 return Unauthorized("Invalid credentials");
