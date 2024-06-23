@@ -85,17 +85,32 @@ namespace KingICT.Controllers
         }
 
         /// <summary>
-        /// Logs out the user by blacklisting their JWT (JSON Web Token) and removing it from the cookies.
+        /// Logs out the user by validating their JWT (JSON Web Token), blacklisting it
+        /// and removing it from cookies or the Authorization header.
         /// </summary>
         /// <returns>A string indicating the result of the logout operation.</returns>
         /// <response code="200">Returns the success message if logout is successful.</response>
-        /// <response code="401">If the user is not logged in.</response>
+        /// <response code="401">If the user is not logged in or the token is invalid.</response>
         [HttpPost("logout")]
         public IActionResult Logout()
         {
+            string token = null;
+
             if (Request.Cookies.ContainsKey("jwt"))
             {
-                var token = Request.Cookies["jwt"];
+                token = Request.Cookies["jwt"];
+            }
+            else if (string.IsNullOrEmpty(token) && Request.Headers.ContainsKey("Authorization"))
+            {
+                var authHeader = Request.Headers["Authorization"].ToString();
+                if (authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    token = authHeader.Substring("Bearer ".Length).Trim();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(token) && _jwtService.ValidateToken(token))
+            {
                 var cookieOptions = new CookieOptions
                 {
                     Expires = DateTime.UtcNow.AddDays(-1),
@@ -108,6 +123,7 @@ namespace KingICT.Controllers
                 Response.Cookies.Append("jwt", "", cookieOptions);
                 return Ok("Logout Successful!");
             }
+
             return Unauthorized("Must be logged in to use this feature!");
         }
     }
